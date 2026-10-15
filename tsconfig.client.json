@@ -1,0 +1,9 @@
+{
+  "//": "Código que roda no navegador: cliente, demo e a simulação compartilhada. Sem tipos do Node.",
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": []
+  },
+  "include": ["src/shared", "src/game", "src/client", "src/demo"]
+}

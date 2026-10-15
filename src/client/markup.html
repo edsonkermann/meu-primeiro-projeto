@@ -1,0 +1,134 @@
+<canvas id="world" class="world" aria-label="Mundo de Valdoria"></canvas>
+
+<section id="title-screen" class="title-screen" aria-labelledby="title-logo">
+  <div class="title-card">
+    <p class="title-version">Protótipo 0.1</p>
+    <h1 id="title-logo" class="logo">Valdoria</h1>
+    <p class="lede">Crie seu herói, saia da Vila de Arden e enfrente o que vive além dos Campos de Lírio.</p>
+
+    <form id="login-form" class="login plate" novalidate>
+      <div class="field">
+        <label for="login-name">Nome do herói</label>
+        <input id="login-name" name="name" type="text" maxlength="16" autocomplete="off" spellcheck="false" placeholder="Ex.: Lyra_07" required>
+        <p id="login-hint" class="hint">3 a 16 caracteres: letras sem acento, números ou _</p>
+      </div>
+      <fieldset class="field classes">
+        <legend>Classe</legend>
+        <div id="class-grid" class="class-grid"></div>
+      </fieldset>
+      <p id="login-error" class="form-error" role="alert" hidden></p>
+      <button id="login-submit" class="btn-primary" type="submit">Entrar no mundo</button>
+    </form>
+    <p id="mode-note" class="mode-note"></p>
+  </div>
+</section>
+
+<div id="hud" class="hud" hidden>
+  <section class="status plate" aria-label="Seu personagem">
+    <div class="status-head">
+      <span id="hud-name" class="status-name"></span>
+      <span id="hud-level" class="status-level"></span>
+    </div>
+    <div id="hud-class" class="status-class"></div>
+    <div class="bar bar-hp" title="Vida">
+      <div id="hud-hp-fill" class="bar-fill"></div>
+      <span id="hud-hp-text" class="bar-text"></span>
+    </div>
+    <div class="bar bar-mp" title="Mana">
+      <div id="hud-mp-fill" class="bar-fill"></div>
+      <span id="hud-mp-text" class="bar-text"></span>
+    </div>
+    <div class="bar bar-xp" title="Experiência">
+      <div id="hud-xp-fill" class="bar-fill"></div>
+      <span id="hud-xp-text" class="bar-text"></span>
+    </div>
+    <div class="status-gold"><span class="coin" aria-hidden="true"></span><span id="hud-gold">0</span> de ouro</div>
+  </section>
+
+  <section class="map plate" aria-label="Mapa">
+    <canvas id="minimap" class="minimap" width="192" height="192"></canvas>
+    <div class="zone">
+      <span id="zone-name" class="zone-name"></span>
+      <span id="zone-hint" class="zone-hint"></span>
+    </div>
+  </section>
+
+  <section id="chat" class="chat plate" aria-label="Chat">
+    <ol id="chat-log" class="chat-log" aria-live="polite"></ol>
+    <form id="chat-form" class="chat-form">
+      <label class="sr-only" for="chat-input">Mensagem</label>
+      <input id="chat-input" type="text" maxlength="120" autocomplete="off" placeholder="Enter para conversar">
+    </form>
+  </section>
+
+  <nav class="actions" aria-label="Ações">
+    <button id="act-skill" class="action" type="button">
+      <canvas class="action-icon" width="96" height="96" aria-hidden="true"></canvas>
+      <span class="action-key">1</span>
+      <span id="skill-cost" class="action-badge action-badge-mp"></span>
+      <span class="action-cd"></span>
+      <span class="sr-only">Usar habilidade</span>
+    </button>
+    <button id="act-hp" class="action" type="button">
+      <canvas class="action-icon" width="96" height="96" aria-hidden="true"></canvas>
+      <span class="action-key">Q</span>
+      <span id="hp-count" class="action-badge"></span>
+      <span class="action-cd"></span>
+      <span class="sr-only">Beber poção de vida</span>
+    </button>
+    <button id="act-mp" class="action" type="button">
+      <canvas class="action-icon" width="96" height="96" aria-hidden="true"></canvas>
+      <span class="action-key">E</span>
+      <span id="mp-count" class="action-badge"></span>
+      <span class="action-cd"></span>
+      <span class="sr-only">Beber poção de mana</span>
+    </button>
+    <button id="act-inv" class="action" type="button" aria-controls="inventory" aria-expanded="false">
+      <canvas class="action-icon" width="96" height="96" aria-hidden="true"></canvas>
+      <span class="action-key">I</span>
+      <span class="sr-only">Abrir inventário</span>
+    </button>
+    <button id="act-chat" class="action action-chat" type="button" aria-controls="chat" aria-expanded="false">
+      <span class="action-glyph" aria-hidden="true">Chat</span>
+      <span class="sr-only">Mostrar chat</span>
+    </button>
+  </nav>
+
+  <aside id="inventory" class="inventory plate" aria-label="Inventário" hidden>
+    <header class="inv-head">
+      <h2>Inventário</h2>
+      <button id="inv-close" class="icon-btn" type="button" aria-label="Fechar inventário">&times;</button>
+    </header>
+    <div class="equip-row">
+      <button id="eq-weapon" class="equip-slot" type="button" data-slot="weapon">
+        <canvas width="88" height="88" aria-hidden="true"></canvas>
+        <span>Arma</span>
+      </button>
+      <button id="eq-armor" class="equip-slot" type="button" data-slot="armor">
+        <canvas width="88" height="88" aria-hidden="true"></canvas>
+        <span>Armadura</span>
+      </button>
+      <dl id="inv-stats" class="stats"></dl>
+    </div>
+    <div id="inv-grid" class="inv-grid"></div>
+    <p class="inv-help">Clique em um item para usar ou equipar. Clique na arma ou armadura para desequipar.</p>
+  </aside>
+
+  <div id="tooltip" class="tooltip" role="tooltip" hidden></div>
+  <div id="toasts" class="toasts" aria-live="polite"></div>
+  <div id="banner" class="banner" hidden></div>
+  <div id="death" class="death" hidden>
+    <h2>Você caiu em batalha</h2>
+    <p>Renascendo na Vila de Arden em <span id="death-timer">5</span> s</p>
+  </div>
+  <div id="net-pill" class="net-pill"></div>
+  <p class="help-strip">Clique no chão para andar e em um monstro para atacar. Clique com o botão direito para usar a habilidade.</p>
+</div>
+
+<div id="disconnected" class="overlay" hidden>
+  <div class="overlay-card plate">
+    <h2>Conexão perdida</h2>
+    <p id="disc-reason"></p>
+    <button id="disc-back" class="btn-primary" type="button">Voltar à tela inicial</button>
+  </div>
+</div>

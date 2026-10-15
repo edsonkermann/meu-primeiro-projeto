@@ -7,7 +7,7 @@ coverage/
 *.tsbuildinfo
 
 # Dados locais do servidor (personagens salvos)
-data/
+/data/
 
 # Variáveis de ambiente e segredos
 .env
